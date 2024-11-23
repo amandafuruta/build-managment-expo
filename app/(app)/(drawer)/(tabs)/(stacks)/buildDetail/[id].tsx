@@ -63,19 +63,13 @@ export default function DetailsScreen() {
     );
   }
 
-  const editBuildDetails = async(
-    name: string, 
-    tipologia: string, 
-    address: string, 
-    start: string, 
-    end: string, 
-    id: string) =>{
+  const editBuildDetails = async( id: string) =>{
     setActivityIndicator(true)
     const build = doc(db, 'houses', id)
 
     await updateDoc(build, {
         nome: name,
-        tipologia: tipologia,
+        tipologia: typology,
         address: address,
         start: start,
         end: end, 
@@ -175,7 +169,7 @@ export default function DetailsScreen() {
           <View style={{display: 'flex', alignItems: 'center'}}>            
             <Pressable
               style={styles.btn}
-              onPress={() => editBuildDetails(name, typology, address, start, end, id as string)} >
+              onPress={() => editBuildDetails(id as string)} >
               {
               activityIndicator?
                 <View style={{paddingVertical: 3}}>
@@ -187,11 +181,30 @@ export default function DetailsScreen() {
             </Pressable>
           </View>
         </View> 
-          <View
+        <View
           style={styles.total}>
-          <Link href='/(app)/(drawer)/(tabs)/(stacks)/expensesDetail'>
-            <Text style={{color:"#6d0091", fontWeight:'bold', fontSize:18}}>Despesas</Text>
-            <AntDesign name="arrowright" size={24} color="#710096" />
+          <Link 
+          style={{width: '100%'}}
+          href={{
+            pathname: '/(app)/(drawer)/(tabs)/(stacks)/expensesDetail/[id]',
+            params: { id: id as string },
+          }}>
+            <View 
+            style={{
+              width: '100%',
+              display: 'flex', 
+              flexDirection:'row', 
+              alignItems: 'center', 
+              justifyContent:'space-between'}}>
+              <Text 
+              style={{
+                color:"#6d0091", 
+                fontWeight:'bold', 
+                fontSize:18}}>
+                Despesas
+              </Text>
+              <AntDesign name="arrowright" size={24} color="#710096" />
+            </View>
           </Link>       
         </View> 
       </View>  

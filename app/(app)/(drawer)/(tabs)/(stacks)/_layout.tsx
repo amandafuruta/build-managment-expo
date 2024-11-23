@@ -5,7 +5,8 @@ export default function StacksLayout(){
     <Stack>
      <Stack.Screen name="index" options={{headerShown: false}}/>
      <Stack.Screen name="buildDetail/[id]" options={{headerShown: false}}/>
-     <Stack.Screen name="expensesDetail" options={{headerShown: false}}/>
+     <Stack.Screen name="expensesDetail/[id]" options={{headerShown: false}}/>
+     <Stack.Screen name="addExpense/[id]" options={{headerShown: false}}/>
     </Stack>
   )
 }
