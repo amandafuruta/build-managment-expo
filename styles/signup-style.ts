@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     backgroundBlue:{
-        backgroundColor: "#86add2",
+        backgroundColor: "#B2B5E0",
         flex: 1,
     },
   
@@ -20,45 +20,43 @@ const styles = StyleSheet.create({
     },
   
     input:{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent:'space-between',
+        alignItems: "center",
         borderColor: "#686666",
         borderRadius: 5,
         borderWidth: 1,
         height: 50,
         marginBottom: 15,
-        padding: 10,
+        paddingHorizontal: 10,
+    },
+
+    password_input:{
+        maxWidth: 200,
+        width: '100%',
+        height: 50,
     },
   
     button:{
         borderRadius: 5,
-        backgroundColor: "#3275b5",
+        backgroundColor: "#B2B5E0",
         padding: 8,
-        marginBottom: 5,
+        marginBottom: 40,
     },
   
     button_text:{
-        color: "#fff",
+        color: "#000",
         fontSize: 15,
         textAlign: "center",
     },
   
     register_text:{
-        fontWeight: "bold",
-        fontSize: 20,
-        textAlign: "center",
-        marginBottom: 20,
+        color: 'white', 
+        fontSize: 35, 
+        fontWeight: 'bold', 
+        marginBottom:20
     },
-  
-    registerbox:{
-        justifyContent: "center",
-        position: "absolute",
-        top: 365,
-        backgroundColor:"#d8ecea",
-        padding:  21,
-        borderRadius: 5,
-        borderColor: "#710096",
-        borderWidth: 2,
-        width: 280,
-    }
 });
 
 export default styles

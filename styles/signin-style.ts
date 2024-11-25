@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     backgroundPurple:{
-        backgroundColor: "#77338d",
+        backgroundColor: "#C5ADC5",
         flex: 1,
     },
 
@@ -37,36 +37,16 @@ const styles = StyleSheet.create({
 
     button:{
         borderRadius: 5,
-        backgroundColor: "#710096",
+        backgroundColor: "#C5ADC5",
         padding: 8,
         marginBottom: 5,
     },
 
     button_text:{
-        color: "#fff",
+        color: "#000",
         fontSize: 15,
         textAlign: "center",
     },
-
-    
-    register_text:{
-        fontWeight: "bold",
-        fontSize: 20,
-        textAlign: "center",
-        marginBottom: 20,
-    },
-
-    registerbox:{
-        justifyContent: "center",
-        position: "absolute",
-        top: 365,
-        backgroundColor:"#d8ecea",
-        padding:  21,
-        borderRadius: 5,
-        borderColor: "#710096",
-        borderWidth: 2,
-        width: 280,
-    }
 })
 
 export default styles;

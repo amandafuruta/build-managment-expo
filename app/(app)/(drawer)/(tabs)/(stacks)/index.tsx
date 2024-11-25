@@ -7,6 +7,7 @@ import { Link, useNavigation } from 'expo-router';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface House {
   id: string;
@@ -20,16 +21,16 @@ interface House {
 export default function Home(){
   const [refreshing, setRefreshing] = useState(false)
       , [loading, setLoading] = useState(true)
-      , [build, setBuild] = useState<House[]>([])  
+      , [builds, setBuilds] = useState<House[]>([])  
       , housesCollection = collection(db, 'houses')
       , navigation = useNavigation<DrawerNavigationProp<any>>()
-  
+
   useEffect(()=> {    
     gethouses()
-    setLoading(false)
   }, [])
 
   const gethouses =  async() => {
+    setLoading(true);
     const querySnapshot = await getDocs(housesCollection)        
 
     const houses: House[] = querySnapshot.docs.map((doc) => ({
@@ -41,12 +42,13 @@ export default function Home(){
       tipologia: doc.data().tipologia,
     }));
     
-    setBuild(houses)
+    setBuilds(houses)
+    setLoading(false)
   }
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    gethouses()
+    await gethouses()
     setRefreshing(false)
   }
 
@@ -76,7 +78,7 @@ export default function Home(){
 
   return(
     <FlatList
-      data={build}
+      data={builds}
       keyExtractor={(item) => item.id}
       renderItem={({ item, index }) => (
         <Link
@@ -117,7 +119,7 @@ export default function Home(){
       }
       ListEmptyComponent={
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color="#710096" />
+          
         </View>
       }
     />

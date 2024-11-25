@@ -45,22 +45,27 @@ export default function ExpensesDetail(){
     setExpenses(expensesData)
   }
 
-  const deleteAlert = (id: string) =>
+  const deleteAlert = async (id: string) =>{
     Alert.alert(
-    "Alert Mesage!",
-    "Are you sure you want to delete?",
-    [
+      "Alert Mesage!",
+      "Are you sure you want to delete?",
+      [
         {
         text: "Cancel",
         style: "cancel"
         },
         { text: "OK", onPress: () => confirmedDeleteAlert(id) }
-    ]
-  );
+      ]
+    );
+  }
 
   const confirmedDeleteAlert = async(id:string) => {
-    const expense = doc(db, 'expenses', id)
-    await deleteDoc(expense)
+    try{
+      const expense = doc(db, 'expenses', id)
+      await deleteDoc(expense)
+    } catch (e){
+      console.log(e)
+    }
 
     Alert.alert(
       "Deleted!",
@@ -143,7 +148,7 @@ export default function ExpensesDetail(){
                     Edit 
                   </Text>
                 </Link>
-                <Pressable onPress={() => deleteAlert(expense.id_house)}>
+                <Pressable onPress={() => deleteAlert(expense.id)}>
                   <Feather name="trash-2" size={24} color="red" />
                 </Pressable>
               </View>

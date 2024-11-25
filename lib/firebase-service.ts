@@ -7,6 +7,7 @@ import {
     UserCredential
   } from 'firebase/auth';
   import { auth } from './firebase-config';
+import { FirebaseError } from 'firebase/app';
 
   export interface FirebaseUserResponse {
     user: User;
@@ -29,18 +30,13 @@ import {
   export async function login(
     email: string, 
     password: string
-  ): Promise<FirebaseUserResponse | undefined> {
-    try {
-      const userCredential: UserCredential = await signInWithEmailAndPassword(
-        auth, 
-        email, 
-        password
-      );
-      return { user: userCredential.user };
-    } catch (e) {
-      console.error("[error logging in] ==>", e);
-      throw e;
-    }
+  ): Promise<FirebaseUserResponse | undefined> {  
+    const userCredential: UserCredential = await signInWithEmailAndPassword(
+      auth, 
+      email, 
+      password
+    );
+    return { user: userCredential.user };
   }
 
   export async function logout(): Promise<void> {
@@ -57,7 +53,7 @@ import {
     email: string,
     password: string,
   ): Promise<FirebaseUserResponse | undefined> {
-    try {
+   
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       
       if (name) {
@@ -65,8 +61,4 @@ import {
       }
 
       return { user: userCredential.user };
-    } catch (e) {
-      console.error("[error registering] ==>", e);
-      throw e;
-    }
   }

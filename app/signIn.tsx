@@ -1,5 +1,5 @@
 import { router, Link } from "expo-router";
-import { Text, TextInput, View, Pressable, Image } from "react-native";
+import { Text, TextInput, View, Pressable, Image, ActivityIndicator } from "react-native";
 import { useState } from "react";
 import { useSession } from "@/context";
 import styles from "@/styles/signin-style";
@@ -7,20 +7,27 @@ import styles from "@/styles/signin-style";
 export default function SignIn(){
     const [email, setEmail] = useState("")
         , [password, setPassword] = useState("")
+        , [errorMessage, setErrorMessage] = useState("")
+        , [loading, setLoading] = useState(false)
         , { signIn } = useSession()
 
     const handleLogin = async () => {
-        try {
-            return await signIn(email, password);
-        } catch (err) {
-            console.log("[handleLogin] ==>", err);
-            return null;
-        }
-    };
+        setLoading(true)
+        const res = await signIn(email, password);
 
-    const handleSignInPress = async () => {
-        const resp = await handleLogin();
-        router.replace("/(app)");
+        if(!email || !password){
+            setErrorMessage("Please fill in all fields.")
+            setLoading(false);
+            return;
+        }
+
+        if (typeof res === 'string') {
+            setErrorMessage(res); 
+            setLoading(false);
+            return
+        } else {
+            router.replace("/(app)");
+        }
     };
 
     return(
@@ -50,8 +57,16 @@ export default function SignIn(){
                         setPassword(val);
                         }}
                     />
-                    <Pressable style={[styles.button, {marginBottom: 20}] }  onPress={handleSignInPress}>
-                        <Text style={styles.button_text}>Submit</Text>
+                    {errorMessage &&
+                        <Text style={{color:'red', marginBottom: 20}}>{errorMessage}</Text>
+                    }
+                    <Pressable style={[styles.button, {marginBottom: 20}] }  onPress={handleLogin}>
+                        {
+                            loading?
+                            <ActivityIndicator color='#000'/>
+                            :
+                            <Text style={styles.button_text}>Submit</Text>
+                        }
                     </Pressable >
                     <Link href="/signUp" asChild> 
                         <Pressable  style={styles.button } >
