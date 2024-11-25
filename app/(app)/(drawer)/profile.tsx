@@ -7,6 +7,7 @@ import { db } from "@/lib/firebase-config";
 
 export default function Profile(){
   const { user } = useSession()
+      , [loading, setLoading] = useState(true)
       , [name, setName] = useState('')
       , [bio, setBio] = useState('')
       , [spinner, setSpinner] = useState(false)
@@ -23,6 +24,7 @@ export default function Profile(){
             const data = querySnapshot.docs[0].data()
             setName(data.name)
             setBio(data.bio)
+            setLoading(false)
           } else {
             console.log('No user found with this email')
           }
@@ -44,17 +46,28 @@ export default function Profile(){
     });
 
     setSpinner(false)
-    AlertaBox()
-  }
-
-  function AlertaBox(){
-      Alert.alert(
+    Alert.alert(
       "Updated!",
       "",
-      [
-          { text: "OK"}
-      ]
-      );
+      [ { text: "OK"} ]
+    );
+  }
+
+  if(loading){
+    return(
+      <>
+      <View style={styles.header}>
+        <Text style={styles.title}>
+          User Information
+        </Text>
+      </View>
+      <View style={styles.content}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
+          <ActivityIndicator size="large" color="#710096"/>
+        </View>
+      </View>
+      </>
+    )
   }
 
   return(
@@ -91,7 +104,7 @@ export default function Profile(){
             style={styles.btn} 
             onPress={() => [editProfile (name, bio), setSpinner(true)]}>
               {spinner?
-                <View style={{paddingVertical: 10}}>
+                <View style={{paddingVertical: 3}}>
                   <ActivityIndicator color='#fff'/>
                 </View>
                 :

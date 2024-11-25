@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native'
 
 interface Props{
+  id: string
   id_house: string
   category: string
   detail: string
@@ -19,19 +20,20 @@ export default function ExpensesDetail(){
   const  router = useRouter()
       , { id } = useLocalSearchParams()
       , [expenses, setExpenses] = useState<Props[]>([])
-      , [activityIndicator, setActivityIndicator] = useState(true)
+      , [loading, setloading] = useState(true)
       , [isRefreshing, setIsRefreshing] = useState(false)
       , expensesCollection = collection(db, 'expenses')
   
   useEffect(()=> {  
     Getexpenses() 
-    setActivityIndicator(false)
+    setloading(false)
   }, [])
 
   async function Getexpenses(){
     const expensesQuery = query(expensesCollection, where('id_house', '==', id))
     , expenseDoc= await getDocs(expensesQuery)
     , expensesData = expenseDoc.docs.map(doc => ({
+      id: doc.id,
       id_house: doc.data().id_house,
       category: doc.data().category,
       detail: doc.data().detail,
@@ -76,7 +78,7 @@ export default function ExpensesDetail(){
     }, 2000);
   }, []);
   
-  if(activityIndicator){
+  if(loading){
     return(
       <>
       <View style={styles.header}>
@@ -104,9 +106,18 @@ export default function ExpensesDetail(){
         <Text style={styles.title}>Expense Details</Text>
       </View>
       <View style={{padding:20}}>
-        <Pressable >
-          <Text style={[styles.mydash, {fontWeight: "bold"}]}>My Dashboard</Text>
-        </Pressable>
+        <View style={[styles.mydash]}>
+          <Link 
+            style={{width: '100%'}}
+            href={{
+              pathname: '/(app)/(drawer)/(tabs)/(stacks)/dashboard',
+              params: { id: id as string },
+            }}>          
+            <Text style={[styles.mydash, {fontWeight: "bold"}]}>
+              My Dashboard
+            </Text>          
+          </Link>
+        </View>
         <Link 
           style={{width: '100%'}}
           href={{
@@ -119,15 +130,19 @@ export default function ExpensesDetail(){
           expenses.map((expense, index) => 
             <View key={index}  style={styles.card}>
               <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginBottom: 20}}>
-                <Pressable>
+                <Link 
+                href={{
+                  pathname: '/(app)/(drawer)/(tabs)/(stacks)/editExpense/[id]',
+                  params: { id: expense.id },
+                }}>
                   <Text 
                   style={[
                     styles.add_text, 
                     {fontWeight: 'bold', 
                     color:"#710096"}]}>
-                    Editar
+                    Edit 
                   </Text>
-                </Pressable>
+                </Link>
                 <Pressable onPress={() => deleteAlert(expense.id_house)}>
                   <Feather name="trash-2" size={24} color="red" />
                 </Pressable>

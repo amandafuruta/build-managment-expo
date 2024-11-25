@@ -19,12 +19,14 @@ interface House {
 
 export default function Home(){
   const [refreshing, setRefreshing] = useState(false)
+      , [loading, setLoading] = useState(true)
       , [build, setBuild] = useState<House[]>([])  
       , housesCollection = collection(db, 'houses')
       , navigation = useNavigation<DrawerNavigationProp<any>>()
   
   useEffect(()=> {    
     gethouses()
+    setLoading(false)
   }, [])
 
   const gethouses =  async() => {
@@ -46,6 +48,30 @@ export default function Home(){
     setRefreshing(true);
     gethouses()
     setRefreshing(false)
+  }
+
+  if(loading){
+    return(
+      <>
+      <View style={styles.box_title}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          style={styles.background}
+        />
+        <Pressable
+          onPress={() => navigation.openDrawer()}
+          style={{ marginLeft: 16 }} >
+          <Ionicons name="menu" size={24} color="#fff" />
+        </Pressable>
+        <Text style={styles.title}>
+          My Builds
+        </Text>
+      </View>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
+        <ActivityIndicator size="large" color="#710096"/>
+      </View>
+      </>
+    )
   }
 
   return(

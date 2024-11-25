@@ -97,10 +97,8 @@ export default function DetailsScreen() {
         </Pressable>
         <Text style={styles.title}>BUILD DETAILS</Text>
       </View>
-      <View style={styles.content}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
-          <ActivityIndicator size="large" color="#710096"/>
-        </View>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
+        <ActivityIndicator size="large" color="#710096"/>
       </View>
       </>
     )
