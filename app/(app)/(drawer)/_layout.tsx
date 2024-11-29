@@ -28,13 +28,13 @@ export default function DrawerLayout(){
           <Pressable
             onPress={handleLogout}
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: "#417abb39",
               padding: 10,
               borderRadius: 5,
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "#C5ADC5", fontSize: 16 }}>Logout</Text>
+            <Text style={{ color: "#417abb", fontSize: 16 }}>Logout</Text>
           </Pressable>
         </View>
       </DrawerContentScrollView>
@@ -46,14 +46,14 @@ export default function DrawerLayout(){
       <Drawer 
       screenOptions={{
         drawerStyle: {
-          backgroundColor: "#C5ADC5",
+          backgroundColor: "#fff",
           paddingTop: 10,
           borderTopEndRadius: 0,
           borderBottomEndRadius: 0,
           maxWidth: 300,
         },
-        drawerActiveBackgroundColor: '#f0e5e2',
-        drawerActiveTintColor: '#c97ec9',
+        drawerActiveBackgroundColor: '#417abb1f',
+        drawerActiveTintColor: '#417abb',
         drawerItemStyle: {
           borderRadius: 5, 
           marginVertical: 5,
@@ -65,8 +65,7 @@ export default function DrawerLayout(){
           options={{
             drawerLabel: "Home",
             headerShown: false,
-          }}
-          
+          }}          
         />
         <Drawer.Screen
           name="profile"

@@ -157,7 +157,7 @@ export default function Register() {
               <Text style={{fontSize:15}}>
                 Already registered?
               </Text>                 
-                <Text style={[styles.button_text, {color:'#000', fontWeight:'bold'}]} >
+                <Text style={{color:'#000', fontWeight:'bold', fontSize:15}} >
                   Sign in
                 </Text>                 
             </View>

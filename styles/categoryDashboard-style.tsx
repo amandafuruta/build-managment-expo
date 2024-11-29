@@ -1,39 +1,24 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  header:{
-    backgroundColor: "#9e639e",
-    paddingVertical: 20,
-    paddingHorizontal:20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  title:{
-    color: "#fff",
-    fontSize: 25,
-    textAlign: "center",
-    paddingVertical: 10,
-  },
+ container:{
+  display:"flex", 
+  flexDirection:"column",   
+ },
 
   row:{
     display: 'flex',
     flexDirection: 'row',
-  },
-
-  purple:{
-    backgroundColor:"#9e639e",
-    color: "#fff",  
-    fontWeight: "bold",  
-    borderBottomColor: "#fff",
-    borderBottomWidth: 1,    
+    alignItems: 'center',
+    width: '100%',
+    height: 50,
+    borderWidth: 1, 
+    borderColor: '#cfcece',
+    paddingHorizontal: 10,
   },
 
   field:{
     width: "50%",
-    paddingVertical:20,
-    textAlign: "center",
     fontSize: 20,
   },
 

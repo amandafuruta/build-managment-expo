@@ -6,8 +6,11 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
-export default function Category(){
-  const  router = useRouter()
+interface Props{
+  houseId: string
+}
+export default function Category(props:Props){
+  const  {houseId} = props
       , { id } = useLocalSearchParams()
       , [loading, setloading] = useState(false)
       , [details, setDetails] = useState({
@@ -21,33 +24,23 @@ export default function Category(){
       })
 
   useEffect(() => {
-    const fetchUserData = async () =>{
-      const usersRef = collection(db, 'expenses')
-          , userQuery = query(usersRef, where('id_house', '==', id))
-          , querySnapshot = await getDocs(userQuery)
-          , expensesData = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            id_house: doc.data().id_house,
-            category: doc.data().category,
-            detail: doc.data().detail,
-            start: doc.data().start,
-            end: doc.data().end,
-            total: doc.data().total
-          }))
-    }
-
-    fetchUserData()
-  })
+    console.log("ID in useEffect:", id); // Check if `id` is available
+    const fetchUserData = async () => {
+      if (id) {
+        console.log("Fetching data for id:", id);
+        const usersRef = collection(db, 'expenses');
+        const userQuery = query(usersRef, where('id_house', '==', id));
+        const querySnapshot = await getDocs(userQuery);
+        console.log(querySnapshot);  // This will help see if the query fetches anything
+      }
+    };
+  
+    fetchUserData();
+  }, [id]);
   
   if(loading){
     return(
-      <>
-        <View style={styles.header}>
-          <Pressable onPress={()=> router.back()}>  
-            <AntDesign name="arrowleft" size={24} color="#fff" />
-          </Pressable>
-          <Text style={styles.title}>Cost per category</Text>
-        </View>      
+      <>     
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
           <ActivityIndicator size="large" color="#710096"/>
         </View>     
@@ -56,23 +49,18 @@ export default function Category(){
   }
 
   return(
-    <>
-    <View style={styles.header}>
-      <Pressable onPress={()=> router.back()}>  
-        <AntDesign name="arrowleft" size={24} color="#fff" />
-      </Pressable>
-      <Text style={styles.title}>Cost per category</Text>
-    </View>  
-    <View style={{display:"flex", flexDirection:"column", paddingHorizontal:20, paddingVertical:30}}>                
+    <> 
+    <View style={styles.container}>                
       <View style={styles.row}>
-        <Text style={[styles.purple, styles.field]}>Materials</Text>
-        <Text style={[styles.white, styles.field]}>{details.totalMaterial} €	</Text>
+        <Text style={styles.field}>Materials</Text>
+        <Text style={styles.field}>€</Text>
+        {/* <Text >{details.totalMaterial} €	</Text> */}
       </View>
       <View style={styles.row}>
-        <Text style={[styles.purple, styles.field]}>Electrician</Text>
-        <Text style={[styles.white, styles.field]}>{details.totalElet} €</Text>
+        <Text style={styles.field}>Electrician</Text>
+        <Text style={styles.field}>{details.totalElet} €</Text>
       </View>
-      <View style={styles.row}>
+      {/* <View style={styles.row}>
         <Text style={[styles.purple, styles.field]}>Painter</Text>
         <Text style={[styles.white, styles.field]}>{details.totalPaint} €</Text>
       </View>
@@ -91,7 +79,7 @@ export default function Category(){
       <View  style={styles.row}>
         <Text style={[styles.purple, styles.field]}>Others</Text>
         <Text style={[styles.white, styles.field]}>{details.totalOther} €</Text>
-      </View>
+      </View> */}
     </View>
     </>
   )

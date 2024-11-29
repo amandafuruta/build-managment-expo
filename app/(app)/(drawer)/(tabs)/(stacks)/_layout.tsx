@@ -9,7 +9,6 @@ export default function StacksLayout(){
      <Stack.Screen name="addExpense/[id]" options={{headerShown: false}}/>
      <Stack.Screen name="editExpense/[id]" options={{headerShown: false}}/>
      <Stack.Screen name="dashboard" options={{headerShown: false}}/>
-     <Stack.Screen name="categoryDashboard" options={{headerShown: false}}/>
     </Stack> 
   )
 }

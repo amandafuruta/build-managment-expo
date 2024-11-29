@@ -2,7 +2,7 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Tabs, useNavigation } from "expo-router";
 import React from "react";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function TabsLayout(){
   const navigation = useNavigation<DrawerNavigationProp<any>>();
@@ -21,19 +21,23 @@ export default function TabsLayout(){
           tabBarLabelStyle: { 
             fontSize: 14,
           },
+          tabBarStyle:{
+            height: 50,
+            paddingTop: 5,
+          },
           tabBarIcon: ({ focused }) => (
-            <AntDesign  
-            name="home"  
-            style={{
-              color: focused? '#710096' : '#757474', 
-              fontSize: focused? 26 : 24,
-            }}/>
+              <AntDesign  
+              name="home"  
+              style={{
+                color: focused? '#417abb' : '#757474', 
+                fontSize: focused? 26 : 24,
+              }}/>
           ),
-          tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? '#710096' : '#757474', fontSize: 14 }}>
-              Home
-            </Text>
-          ),
+          // tabBarLabel: ({ focused }) => (
+          //   <Text style={{ color: focused ? '#710096' : '#757474', fontSize: 14 }}>
+          //     Home
+          //   </Text>
+          // ),
           headerStyle: {
             backgroundColor: "#16011d", 
           },
@@ -62,14 +66,14 @@ export default function TabsLayout(){
             <Ionicons 
             name="add-outline"  
             style={{
-              color: focused? '#710096' : '#757474', 
+              color: focused? '#417abb' : '#757474', 
               fontSize: focused? 26 : 24}} />
           ),
-          tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? '#710096' : '#757474', fontSize: 14 }}>
-              Add Build
-            </Text>
-          ),
+          // tabBarLabel: ({ focused }) => (
+          //   <Text style={{ color: focused ? '#710096' : '#757474', fontSize: 14 }}>
+          //     Add Build
+          //   </Text>
+          // ),
           headerStyle: {
             backgroundColor: "#16011d", 
           },

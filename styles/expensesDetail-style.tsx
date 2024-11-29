@@ -5,37 +5,53 @@ const styles = StyleSheet.create({
     backgroundColor: "#490061",
     paddingVertical: 20,
     paddingHorizontal:20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    position: 'relative',
+  },
+  
+  subtitle_box: {
+    position:'absolute',
+    bottom: -40,
+    backgroundColor: '#fff',
+    height: 70,
+    width: 300,
+    borderRadius: 30,
+    left: '50%',
+    transform: [{ translateX: -125 }],
+    boxShadow: '1px 1px 10px #0000005e',
+    padding: 20,
   },
 
-  title:{
-    color: "#fff",
-    fontSize: 25,
-    textAlign: "center",
-    paddingVertical: 10,
-  },
-
-  mydash:{
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: "#439aa5",
-    paddingVertical: 15,
-    textAlign: "center",
-    marginBottom: 30,
-    backgroundColor:"#439aa5",
-    color: "#fff",
+  subtitle_text:{
     fontSize: 20,
+    fontWeight: 'bold',
+    color: '#490061',
+    textAlign: 'center',
   },
 
   card:{
-    marginTop: 20,
     backgroundColor: "#fff",
+    boxShadow:'1px 1px 5px #a09f9f',
+    paddingLeft: 20,
+    paddingRight: 30,
+    paddingVertical: 20,
+    marginTop: 20,
     borderRadius: 5,
-    padding: 20,
-    borderColor: "#a7adaf",
-    borderWidth: 1,
+    borderLeftColor: "#490061",
+    borderLeftWidth: 10,
+    position: 'relative',
+  },
+
+  moreBtn:{
+    position: 'absolute',
+    right: 0,
+    top: 10,
+  },
+
+  label:{
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    marginBottom: 10,
+    color: '#490061',
   },
 
   infos:{
@@ -47,7 +63,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'right',
     marginRight: 10,
-  },  
+  }, 
+  
+  modal:{
+    position:'absolute',
+    zIndex: 2,
+    top: 40,
+    right: 10,
+    boxShadow:'1px 1px 5px #a09f9f',
+    borderRadius: 5,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
 })
 
 export default styles;

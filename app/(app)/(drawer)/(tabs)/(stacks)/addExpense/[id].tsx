@@ -14,22 +14,29 @@ export default function AddExpense(){
   const { id } = useLocalSearchParams()
       , router = useRouter()
       , [activityIndicator, setActivityIndicator] = useState(false)
-      , [category, setCategory ] = useState("")
-      , [start, setStart] = useState("")
-      , [end, setEnd] = useState("")
-      , [detail, setDetail] = useState("")
-      , [price, setPrice] = useState("")
+      , [formData, setFormData] = useState({
+        category: '',
+        start: '',
+        end: '',
+        detail: '',
+        total: ''
+      });
 
-    const addExpense = async (id:string) => {
-      setActivityIndicator(true)
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [field]: value
+    }));
+  };
+
+  const addExpense = async (id:string) => {
+    setActivityIndicator(true)
+    try {
       const expenseCollection = collection(db, 'expenses')
+      
       await addDoc(expenseCollection, {
-          category: category,
-          start: start,
-          end: end,
-          detail: detail,
-          total: price,
-          id_house: id,
+        ...formData,
+        id_house: id,
       });
 
       Alert.alert(
@@ -38,109 +45,127 @@ export default function AddExpense(){
         [ { text: "OK", } ]
       );
 
-      setActivityIndicator(false)
+      setFormData({
+        category: '',
+        start: '',
+        end: '',
+        detail: '',
+        total: ''
+      });
+    } catch (error) {
+      Alert.alert("Error", "Failed to create expense. Please try again.");
+    } finally {
+      setActivityIndicator(false);
     }
+  }
 
   return(
-    <ScrollView> 
+    <>
       <View style={styles.header}>
         <Pressable onPress={()=> router.back()}> 
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </Pressable>
-        <Text style={styles.title}>Add Expense</Text>
+        <Text style={styles.title}>Add Expense</Text>        
       </View>
       <View style={styles.content}>
         <View style={styles.card}>
-          <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Category:</Text>
-            <SelectDropdown
-              data={categorytype}
-              onSelect={(selectedItem) => {
-                setCategory(selectedItem);
-              }}
-              renderButton={(selectedItem, isOpened) => {
-                return (
-                  <View style={styles.input}>
-                    <Text>
-                      {(category) || 'Select category'}
-                    </Text>
-                  </View>
-                );
-              }}
-              renderItem={(item, isSelected) => {
-                return (
-                  <View 
-                  style={{...(isSelected && { backgroundColor: '#D2D9DF' })}}>
-                    <Text style={{padding: 5}}>{item}</Text>
-                  </View>
-                );
-              }}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-          <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Start:</Text>               
-            <TextInputMask
-              type={'datetime'}
-              style={styles.input}
-              options={{
-                  format: 'DD/MM/YYYY'
-              }}
-              value={start}
-              onChangeText={setStart}
-              placeholder='DD/MM/YYYY'
-            />
-          </View>
-          <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>End:</Text>
-            <TextInputMask
-              type={'datetime'}
-              style={styles.input}
-              options={{
-                  format: 'DD/MM/YYYY'
-              }}
-              value={end}
-              onChangeText={setEnd}
-              placeholder='DD/MM/YYYY'
-            />
-          </View> 
-          <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Detail:</Text>
-            <TextInput 
-              value={detail}
-              onChangeText={setDetail}
-              style={styles.input}
-            />
-          </View> 
-          <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Total €:</Text>
-            <TextInput 
-                value={price}
-                onChangeText={setPrice}
+          <ScrollView>
+            <View style={styles.details}>
+              <Text style={styles.label}>
+                Category:
+              </Text>
+              <SelectDropdown
+                data={categorytype}
+                onSelect={(selectedItem) => {
+                  handleInputChange('category', selectedItem)
+                }}
+                renderButton={(selectedItem, isOpened) => {
+                  return (
+                    <View style={styles.input}>
+                      <Text>
+                        {(selectedItem ) || 'Select category'}
+                      </Text>
+                    </View>
+                  );
+                }}
+                renderItem={(item, isSelected) => {
+                  return (
+                    <View 
+                    style={{...(isSelected && { backgroundColor: '#D2D9DF' })}}>
+                      <Text style={{padding: 5}}>{item}</Text>
+                    </View>
+                  );
+                }}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+            <View style={styles.details}>
+              <Text style={styles.label}>
+                Start:
+              </Text>               
+              <TextInputMask
+                type={'datetime'}
                 style={styles.input}
-            />
-          </View> 
-          <View style={styles.buttons}>
-            <Pressable 
-              onPress={()=> router.back()}
-              style={styles.btn}>
-                <Text style={styles.btn_text}>Cancel</Text>
-            </Pressable>          
-            <Pressable
-              style={styles.btn}
-              onPress={() => addExpense(id as string)}  >
-                {
-                  activityIndicator?
-                  <View style={{paddingVertical: 3}}>
-                    <ActivityIndicator color='#fff'/>
-                  </View>
-                  :
-                  <Text style={styles.btn_text}>Save</Text>
-                }
-            </Pressable>
-          </View>
+                options={{
+                    format: 'DD/MM/YYYY'
+                }}
+                value={formData.start}
+                onChangeText={(value) => handleInputChange('start', value)}
+                placeholder='DD/MM/YYYY'
+              />
+           </View>
+           <View style={styles.details}>
+              <Text style={styles.label}>
+                End:
+              </Text>
+              <TextInputMask
+                type={'datetime'}
+                style={styles.input}
+                options={{
+                    format: 'DD/MM/YYYY'
+                }}
+                value={formData.end}
+                onChangeText={(value) => handleInputChange('end', value)}
+                placeholder='DD/MM/YYYY'
+              />
+           </View> 
+           <View style={styles.details}>
+              <Text style={styles.label}>
+                Detail:
+              </Text>
+              <TextInput 
+                value={formData.detail}
+                onChangeText={(value) => handleInputChange('detail', value)}
+                style={styles.input}
+              />
+           </View> 
+           <View style={styles.details}>
+              <Text style={styles.label}>
+                Total €:
+              </Text>
+              <TextInput 
+                value={formData.total}
+                onChangeText={(value) => handleInputChange('total', value)}
+                style={styles.input}
+              />
+           </View> 
+           <View style={styles.buttons}>         
+             <Pressable
+               style={styles.btn}
+               onPress={() => addExpense(id as string)}  >
+                 {
+                   activityIndicator?
+                   <View style={{paddingVertical: 3}}>
+                     <ActivityIndicator color='#fff'/>
+                   </View>
+                   :
+                   <Text style={styles.btn_text}>Save</Text>
+                 }
+             </Pressable>
+           </View>         
+          </ScrollView>
         </View>
       </View>
-    </ScrollView> 
+    </>    
   )
 }

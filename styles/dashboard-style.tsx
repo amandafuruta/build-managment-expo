@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: "#439aa5",
+    backgroundColor: "#417abb",
     paddingVertical: 20,
     paddingHorizontal:20,
     display: 'flex',
@@ -15,30 +15,31 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: "center",
     paddingVertical: 10,
+    marginLeft: 5,
   },
 
   dashboard:{
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start'
+    flexDirection: 'column',
   },
 
   btn:{
     display: 'flex',
+    flexDirection:'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     borderRadius: 5,
-    height: 100,
-    width: '45%',
+    height: 70,
+    width: '100%',
     marginBottom: 30,
-    backgroundColor: "#ad85ad",
+    backgroundColor: "#fff",
     marginRight: 10,
+    boxShadow:'1px 1px 5px #a09f9f',
   },
 
   btn_title:{
-    color: "#fff",
-    fontSize: 25,
+    color: "#417abb",
+    fontSize: 20,
     paddingVertical: 5,  
     textAlign: 'center',  
   },

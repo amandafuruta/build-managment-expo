@@ -1,5 +1,5 @@
 import { useSession } from "@/context";
-import { Alert, Pressable, ScrollView, Text, TextInput, View, ActivityIndicator } from 'react-native';
+import { Alert, Pressable, ScrollView, Text, TextInput, View, ActivityIndicator, Image } from 'react-native';
 import styles from '@/styles/profile-style';
 import { useEffect, useState } from "react";
 import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
@@ -63,7 +63,7 @@ export default function Profile(){
       </View>
       <View style={styles.content}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
-          <ActivityIndicator size="large" color="#710096"/>
+          <ActivityIndicator size="large" color="#417abb"/>
         </View>
       </View>
       </>
@@ -71,21 +71,30 @@ export default function Profile(){
   }
 
   return(
-    <ScrollView style={{flex: 1, backgroundColor: "#ebebeb" }}>
+    <ScrollView style={{flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.header}>
           <Text style={styles.title}>
             User Information
           </Text>
       </View>
       <View style={styles.content}>
-      <View style={styles.card}>
-        <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Name: </Text>
+        <Image
+          source={require("../../../assets/images/profile.png")}
+          style={styles.img}
+        />
+        <Pressable>
+          <Text style={{fontWeight: "bold"}}>Change photo</Text>
+        </Pressable>
+        <View style={styles.card}>
+          <View style={styles.details}>
+            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>
+              Name: 
+            </Text>
             <TextInput 
-                value={name}
-                placeholder={name}
-                onChangeText={setName}
-                style={styles.input}
+              value={name}
+              placeholder={name}
+              onChangeText={setName}
+              style={styles.input}
             />
         </View>
         <View style={styles.details}>
@@ -114,8 +123,8 @@ export default function Profile(){
               }
           </Pressable>
         </View>
+        </View>
       </View>
-    </View>
     </ScrollView>
   )
 }

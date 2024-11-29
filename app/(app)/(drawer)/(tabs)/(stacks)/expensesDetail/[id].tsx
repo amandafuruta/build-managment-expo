@@ -23,7 +23,10 @@ export default function ExpensesDetail(){
       , [loading, setloading] = useState(true)
       , [isRefreshing, setIsRefreshing] = useState(false)
       , expensesCollection = collection(db, 'expenses')
-  
+      , [selectedExpense, setSelectedExpense] = useState<Props | null>(null)
+      , [modalVisible, setModalVisible] = useState(false)
+      , [deleteLoad, setDeleteLoad] = useState(false)
+
   useEffect(()=> {  
     Getexpenses() 
     setloading(false)
@@ -54,7 +57,7 @@ export default function ExpensesDetail(){
         text: "Cancel",
         style: "cancel"
         },
-        { text: "OK", onPress: () => confirmedDeleteAlert(id) }
+        { text: "OK", onPress: () => [confirmedDeleteAlert(id), setDeleteLoad(true)] }
       ]
     );
   }
@@ -63,13 +66,14 @@ export default function ExpensesDetail(){
     try{
       const expense = doc(db, 'expenses', id)
       await deleteDoc(expense)
+      setDeleteLoad(false)
     } catch (e){
       console.log(e)
     }
 
     Alert.alert(
       "Deleted!",
-      "",
+      "Reload the page",
       [ { text: "OK"} ]
     );
   }
@@ -82,16 +86,25 @@ export default function ExpensesDetail(){
       setIsRefreshing(false); 
     }, 2000);
   }, []);
+
+  const openBox = (expense: Props) => {
+    setSelectedExpense(expense);
+    setModalVisible(!modalVisible);
+  };
   
   if(loading){
     return(
       <>
       <View style={styles.header}>
-        <Pressable onPress={()=> router.back()}>  
+        <Pressable onPress={()=> router.back()}> 
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </Pressable>
-        <Text style={styles.title}>Expense Details</Text>
-      </View>      
+        <View style={styles.subtitle_box}>
+          <Text style={styles.subtitle_text}>
+           Expenses
+          </Text>
+        </View>
+      </View>    
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
         <ActivityIndicator size="large" color="#710096"/>
       </View>     
@@ -108,23 +121,15 @@ export default function ExpensesDetail(){
         <Pressable onPress={()=> router.back()}> 
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </Pressable>
-        <Text style={styles.title}>Expense Details</Text>
-      </View>
-      <View style={{padding:20}}>
-        <View style={[styles.mydash]}>
-          <Link 
-            style={{width: '100%'}}
-            href={{
-              pathname: '/(app)/(drawer)/(tabs)/(stacks)/dashboard',
-              params: { id: id as string },
-            }}>          
-            <Text style={[styles.mydash, {fontWeight: "bold"}]}>
-              My Dashboard
-            </Text>          
-          </Link>
+        <View style={styles.subtitle_box}>
+          <Text style={styles.subtitle_text}>
+           Expenses
+          </Text>
         </View>
+      </View>
+      <View style={{paddingVertical:50, paddingHorizontal:20}}>
         <Link 
-          style={{width: '100%'}}
+          style={{width: '100%', marginVertical:20}}
           href={{
             pathname: '/(app)/(drawer)/(tabs)/(stacks)/addExpense/[id]',
             params: { id: id as string },
@@ -132,47 +137,67 @@ export default function ExpensesDetail(){
           <Text style={[styles.add_text, {fontWeight: "bold",}]}>Add expense</Text>
         </Link>
         {
-          expenses.map((expense, index) => 
+          expenses.map((expense, index)=>
             <View key={index}  style={styles.card}>
-              <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginBottom: 20}}>
-                <Link 
-                href={{
-                  pathname: '/(app)/(drawer)/(tabs)/(stacks)/editExpense/[id]',
-                  params: { id: expense.id },
-                }}>
-                  <Text 
-                  style={[
-                    styles.add_text, 
-                    {fontWeight: 'bold', 
-                    color:"#710096"}]}>
-                    Edit 
-                  </Text>
-                </Link>
-                <Pressable onPress={() => deleteAlert(expense.id)}>
-                  <Feather name="trash-2" size={24} color="red" />
-                </Pressable>
-              </View>
+              {modalVisible && selectedExpense?.id === expense.id &&
+                <View style={styles.modal}>
+                  <Link 
+                  href={{
+                    pathname: '/(app)/(drawer)/(tabs)/(stacks)/editExpense/[id]',
+                    params: { id: expense.id },
+                  }}
+                  style={{ 
+                    marginBottom: 20, 
+                    width:'100%',
+                  }}>
+                    <View style={{display:'flex', flexDirection:'row'}}>
+                      <AntDesign name="edit" size={20} color="#710096" style={{ marginRight: 15 }} />
+                      <Text style={{color:"#710096", fontWeight:500}}>Edit</Text>  
+                    </View>                                                                            
+                  </Link>
+                  {
+                    deleteLoad ?
+                    <ActivityIndicator/>
+                    :
+                    <Pressable onPress={() => deleteAlert(expense.id)}>
+                      <View style={{display:'flex', flexDirection: 'row'}}>
+                        <AntDesign name="delete" size={20} color="#d60404" style={{ marginRight: 15 }} />
+                        <Text style={{ color: '#d60404' }}>Delete</Text>
+                      </View>
+                    </Pressable>
+                  }
+                </View>
+              }
+              <Pressable 
+              style={styles.moreBtn}
+              onPress={() => openBox(expense)}>
+                <Feather 
+                name="more-horizontal" 
+                size={24} 
+                color="#490061" 
+                style={{position:'absolute', right: 10}}/>
+              </Pressable>
               <View style={styles.infos}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>Category: </Text>
+                <Text style={styles.label}>Category: </Text>
                 <Text style={{fontSize: 18}} >{expense.category}</Text>
               </View>
               <View style={styles.infos}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>Detail: </Text>
+                <Text style={styles.label}>Detail: </Text>
                 <Text style={{fontSize: 18}} >{expense.detail}</Text>
               </View> 
               <View style={styles.infos}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>Start: </Text>
+                <Text style={styles.label}>Start: </Text>
                 <Text style={{fontSize: 18}} key={index}>{expense.start}</Text>
               </View>
               <View style={styles.infos}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>End: </Text>
+                <Text style={styles.label}>End: </Text>
                 <Text style={{fontSize: 18}} key={index}>{expense.end}</Text>
               </View>
               <View style={styles.infos}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>Total : </Text>
+                <Text style={styles.label}>Total : </Text>
                 <Text style={{fontSize: 18}} key={index}>{expense.total} &euro;</Text>
               </View>
-          </View>
+            </View>
           )
         }
       </View>

@@ -1,13 +1,13 @@
+import { useSession } from '@/context';
 import { db } from '@/lib/firebase-config';
 import styles from '@/styles/home-style';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useNavigation } from 'expo-router';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, StatusBar, Text, View } from 'react-native';
 
 interface House {
   id: string;
@@ -24,8 +24,23 @@ export default function Home(){
       , [builds, setBuilds] = useState<House[]>([])  
       , housesCollection = collection(db, 'houses')
       , navigation = useNavigation<DrawerNavigationProp<any>>()
+      , { user, isLoading } = useSession()
+      , [username, setUsername] = useState('')
 
-  useEffect(()=> {    
+  useEffect(()=> {  
+    if(user){
+      const getUser = async() => {
+        const usersRef = collection(db, 'users')
+            , querySnapshot = await getDocs(usersRef)
+        querySnapshot.forEach((doc) => {
+          const data = doc.data(); 
+          if (doc.id === user.uid) {
+            setUsername(data.name)
+          }
+        })
+      }
+      getUser()
+    }  
     gethouses()
   }, [])
 
@@ -65,63 +80,65 @@ export default function Home(){
           style={{ marginLeft: 16 }} >
           <Ionicons name="menu" size={24} color="#fff" />
         </Pressable>
-        <Text style={styles.title}>
-          My Builds
-        </Text>
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', height:"100%"}}>
-        <ActivityIndicator size="large" color="#710096"/>
+        <ActivityIndicator size="large" color="#417abb"/>
       </View>
       </>
     )
   }
 
   return(
-    <FlatList
-      data={builds}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item, index }) => (
-        <Link
-        style={{width:'100%'}}
-        href={{
-          pathname: './buildDetail/[id]',
-          params: { id: item.id },
-        }}>
-          <View
-            style={
-              index % 2 === 0
-                ? [{ backgroundColor: '#fff' }, styles.pressable]
-                : [{ backgroundColor: '#f0ddf7' }, styles.pressable]
-            } >
-            <Text style={styles.text}>{item.nome}</Text>
-            <AntDesign name="arrowright" size={24} color="#710096" />
-          </View>
-        </Link>
-      )}
-      ListHeaderComponent={
-        <View style={styles.box_title}>
-          <LinearGradient
-            colors={['rgba(0,0,0,0.8)', 'transparent']}
-            style={styles.background}
-          />
+    <View style={{flex:1, backgroundColor: '#e9e8e8'}}>
+      <View style={styles.box_title}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          style={styles.background}
+        />
+        <View style={styles.content}>
           <Pressable
             onPress={() => navigation.openDrawer()}
             style={{ marginLeft: 16 }} >
             <Ionicons name="menu" size={24} color="#fff" />
           </Pressable>
           <Text style={styles.title}>
-            My Builds
+            Welcome, {username}
           </Text>
         </View>
-      }
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListEmptyComponent={
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          
+        <View style={styles.subtitle_box}>
+          <Text style={styles.subtitle_text}>
+           My builds
+          </Text>
         </View>
-      }
-    />
+      </View>
+      <View style={{paddingTop: 70, paddingHorizontal: 20}}>
+        <FlatList
+          data={builds}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <Link
+            style={{width:'100%', marginBottom: 10}}
+            href={{
+              pathname: './buildDetail/[id]',
+              params: { id: item.id },
+            }}>
+              <View
+                style={styles.pressable} >
+                <Text style={styles.text}>{item.nome}</Text>
+                <AntDesign name="arrowright" size={24} color="#417abb" />
+              </View>
+            </Link>
+          )}        
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          ListEmptyComponent={
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              
+            </View>
+          }
+        />
+      </View>
+    </View>
   )
 }

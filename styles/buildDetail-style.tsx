@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: "#490061",
+    backgroundColor: "#417abb",
     paddingVertical: 20,
     paddingHorizontal:20,
     display: 'flex',
@@ -23,13 +23,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  edit_text:{
-    fontSize: 18,
-    fontWeight: "bold",
-    marginRight: 10,
-    marginBottom: 20,
-  },  
-
   input:{
     borderRadius: 5,
     padding: 5,
@@ -38,18 +31,11 @@ const styles = StyleSheet.create({
     width: 200,
   },
 
-  img:{
-    width: '100%',
-    height: 200,
-  },
-
   card:{
     marginTop: 20,
     backgroundColor: "#fff",
     borderRadius: 5,
     padding: 20,
-    borderColor: "#a7adaf",
-    borderWidth: 1,
   },
 
   details:{
@@ -59,13 +45,28 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  total:{
+  options:{
     backgroundColor: "#fff",
-    borderColor:"#98ccd3",
-    borderWidth: 2,
-    padding: 20,
+    boxShadow:'1px 1px 5px #a09f9f',
+    paddingLeft: 20,
+    paddingRight: 30,
+    paddingVertical: 20,
     marginTop: 20,
     borderRadius: 5,
+  },
+
+  options_container:{
+    width: '100%',
+    display: 'flex', 
+    flexDirection:'row', 
+    alignItems: 'center', 
+    justifyContent:'space-between',
+  },
+
+  option_text:{
+    color:"#6d0091", 
+    fontWeight:'bold', 
+    fontSize:18,
   },
 
   btn:{

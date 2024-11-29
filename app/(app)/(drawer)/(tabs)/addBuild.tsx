@@ -3,12 +3,12 @@ import styles from '@/styles/addBuild-style';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, Text, TextInput, View, ActivityIndicator } from 'react-native';
+import { Alert, Pressable, ScrollView, Text, TextInput, View, ActivityIndicator, StatusBar } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 
 export default function AddBuild(){
   const [name, setName] = useState("")
-      , [tipologia, setTipologia] = useState("")
+      , [tyology, setTypology] = useState("")
       , [address, setAddress] = useState("")
       , [start, setStart] = useState("")
       , [end, setEnd] = useState("")
@@ -18,36 +18,45 @@ export default function AddBuild(){
   const addTask = async() => {
     await addDoc(housesCollection, {
         nome: name,
-        tipologia: tipologia,
+        tipologia: tyology,
         address: address,
         start: start,
         end: end, 
     });
 
+    setName('')
+    setTypology('')
+    setAddress('')
+    setStart('')
+    setEnd('')
     setSpinner(false)
-    AlertaBox()
-  }
 
-  const AlertaBox = () =>
-      Alert.alert(
+    Alert.alert(
       "Saved!",
       "",
       [ { text: "OK" } ]
-  );
+    ) 
+  }
 
   return(
-    <ScrollView style={{flex: 1, backgroundColor: "#ebebeb"}}>
+    <ScrollView style={{flex: 1, backgroundColor: "#fff"}}>
+      <StatusBar
+        barStyle="light-content"  // 'light-content' for light text, 'dark-content' for dark text
+        backgroundColor="#417abb"
+      />
       <View style={styles.box_title}>
-        <LinearGradient
-          colors={['rgba(0,0,0,0.8)', 'transparent']}
-          style={styles.background}
-        />
-        <Text style={styles.title}>Add build</Text>
+        <View style={styles.subtitle_box}>
+          <Text style={styles.subtitle_text}>
+            Add build
+          </Text>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.card}>            
           <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Name:</Text>
+            <Text style={styles.label}>
+              Name:
+            </Text>
             <TextInput
               value={name}
               placeholder='Build name'
@@ -56,16 +65,20 @@ export default function AddBuild(){
             />
           </View>
           <View style={styles.details}>
-            <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Tipologia:</Text>
+            <Text style={styles.label}>
+              Typology:
+            </Text>
             <TextInput
-              value={tipologia}
+              value={tyology}
               placeholder='Tipologia'
-              onChangeText={setTipologia}
+              onChangeText={setTypology}
               style={styles.input}
             />
           </View>
             <View style={styles.details}>
-              <Text style={{fontWeight:'500', fontSize: 18, marginRight: 10}}>Address:</Text>
+              <Text style={styles.label}>
+                Address:
+              </Text>
               <TextInput
                 value={address}
                 placeholder='Endereço'
@@ -74,12 +87,7 @@ export default function AddBuild(){
               />
             </View>
             <View style={styles.details}>
-              <Text 
-              style={{
-                fontWeight:'500', 
-                fontSize: 18, 
-                marginRight: 10}}
-              >
+              <Text  style={styles.label}>
                 Start:
               </Text>
               <TextInputMask
@@ -94,12 +102,7 @@ export default function AddBuild(){
               />                
             </View>
             <View style={styles.details}>
-              <Text 
-              style={{
-                fontWeight:'500', 
-                fontSize: 18, 
-                marginRight: 10}}
-              >
+              <Text style={styles.label}>
                 End:
               </Text>
               <TextInputMask
@@ -116,8 +119,7 @@ export default function AddBuild(){
             <View style={styles.buttons}>            
               <Pressable
                 style={styles.btn}
-                onPress={() => {addTask(), setSpinner(true)}}
-              >
+                onPress={() => {addTask(), setSpinner(true)}} >
                 {
                   spinner?
                   <ActivityIndicator/>

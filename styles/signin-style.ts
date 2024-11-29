@@ -1,52 +1,82 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    backgroundPurple:{
-        backgroundColor: "#C5ADC5",
-        flex: 1,
-    },
+	body:{
+		flex: 1,
+		backgroundColor: "#417abb",
+	},
 
-    container:{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
-    },
+	img_box:{
+		height: '50%',
+		display:'flex', 
+		alignItems: "center",
+		justifyContent:'center', 
+		position: 'relative',
+		width:'100%',
+		zIndex: 2,
+	},
 
-    img:{
-        borderRadius: 100,
-        width:150 ,
-        height:150,
-        marginBottom: 50,
-    },
+	img:{
+		borderRadius: 100,
+		width:200 ,
+		height:200,
+		boxShadow: '1px 0px 10px #000'
+	},
 
-    card:{
-        backgroundColor: "#fff",
-        borderRadius: 5,
-        padding: 20,
-        width: 300,
-    },
+	img_keyboard:{
+		borderRadius: 100,
+		width:150 ,
+		height:150,
+		boxShadow: '1px 0px 10px #000'
+	},
 
-    input:{
-        borderColor: "#686666",
-        borderRadius: 5,
-        borderWidth: 1,
-        height: 50,
-        marginBottom: 15,
-        padding: 10,
-    },
+	card:{
+		height: '70%',
+		position: 'absolute',
+		backgroundColor: '#fff',
+		bottom: 0,
+		borderTopLeftRadius: 50,
+		borderTopRightRadius: 50,
+		padding: 20,
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+	},
 
-    button:{
-        borderRadius: 5,
-        backgroundColor: "#C5ADC5",
-        padding: 8,
-        marginBottom: 5,
-    },
+	input:{
+		borderColor: "#686666",
+		width: '100%',
+		borderRadius: 5,
+		borderWidth: 1,
+		height: 50,
+		padding: 10,
+		maxWidth: 300,
+		marginBottom: 20
+	},
 
-    button_text:{
-        color: "#000",
-        fontSize: 15,
-        textAlign: "center",
-    },
+	button:{
+		borderRadius: 10,
+		backgroundColor: "#417abb",
+		marginTop: 20,
+		marginBottom: 50,
+		width: 100,
+		height: 50,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+
+	button_text:{
+		color: "#fff",
+		fontSize: 20,
+		textAlign: "center",
+	},
+
+	alignment:{
+		display: 'flex',
+		width: '100%',
+		alignItems: 'center'
+	}
 })
 
 export default styles;
