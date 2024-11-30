@@ -1,6 +1,6 @@
 import { db } from '@/lib/firebase-config';
 import styles from '@/styles/buildDetail-style';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { useEffect, useState, useCallback } from 'react';
@@ -18,6 +18,7 @@ export default function DetailsScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [activityIndicator, setActivityIndicator] = useState(false);
+  const [deleteActivityIndicator, setDeleteActivityIndicator] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     typology: '',
@@ -67,12 +68,14 @@ export default function DetailsScreen() {
   );
 
   const deleteBuild = async () => {
+    setDeleteActivityIndicator(true)
     const build = doc(db, 'houses', id as string);
     await deleteDoc(build);
     showAlert('Deleted!');
+    setDeleteActivityIndicator(false);
   };
 
-  const confirmDeleteAlert = () =>
+  const confirmDeleteAlert = () =>    
     Alert.alert('Alert Message!', 'Are you sure you want to delete?', [
       {
         text: 'Cancel',
@@ -176,7 +179,10 @@ export default function DetailsScreen() {
         <View style={styles.options}>
           <Link
             style={{ width: '100%' }}
-            href='/(app)/(drawer)/(tabs)/(stacks)/dashboard'>
+            href={{
+              pathname: '/(app)/(drawer)/(tabs)/(stacks)/dashboard/[id]',
+              params: { id: id as string },
+            }}>
             <View style={styles.options_container}>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <AntDesign name="dashboard" size={24} color="#710096" style={{ marginRight: 15 }} />
@@ -190,7 +196,11 @@ export default function DetailsScreen() {
           <Pressable style={styles.options_container} onPress={confirmDeleteAlert}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <AntDesign name="delete" size={24} color="#d60404" style={{ marginRight: 15 }} />
-              <Text style={[styles.option_text, { color: '#d60404' }]}>Delete</Text>
+              { deleteActivityIndicator?
+                <ActivityIndicator size={24} color="#d60404"/>
+                :                
+                <Text style={[styles.option_text, { color: '#d60404' }]}>Delete</Text>                
+              }
             </View>
           </Pressable>
         </View>

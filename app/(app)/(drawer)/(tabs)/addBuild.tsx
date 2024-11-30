@@ -70,7 +70,7 @@ export default function AddBuild(){
             </Text>
             <TextInput
               value={tyology}
-              placeholder='Tipologia'
+              placeholder='Typology'
               onChangeText={setTypology}
               style={styles.input}
             />
@@ -81,7 +81,7 @@ export default function AddBuild(){
               </Text>
               <TextInput
                 value={address}
-                placeholder='Endereço'
+                placeholder='Address'
                 onChangeText={setAddress}
                 style={styles.input}
               />

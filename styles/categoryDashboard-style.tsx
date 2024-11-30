@@ -3,7 +3,11 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
  container:{
   display:"flex", 
-  flexDirection:"column",   
+  flexDirection:"column",  
+  height: 353, 
+  borderWidth: 1, 
+  borderColor: '#cfcece',
+  marginBottom: 50,
  },
 
   row:{
@@ -12,21 +16,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 50,
-    borderWidth: 1, 
-    borderColor: '#cfcece',
     paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
 
   field:{
     width: "50%",
     fontSize: 20,
   },
-
-  white:{
-    color: "#9e639e",
-    borderWidth: 1,
-    borderColor: "#9e639e",
-  }
 })
 
 export default styles;
