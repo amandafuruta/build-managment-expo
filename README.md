@@ -1,10 +1,13 @@
+# About this project
 This project was developed during my exchange at the Polytechnic Institute of Bragança in Portugal.
+
+The original project was built in 2022. This is an updated version with Expo.
 
 Check out this [demo video](https://www.youtube.com/shorts/ieZfNeTaHUU?si=CpZUb461Kdugc6Nz) to see how it works.
 
 
 
-# Welcome to your Expo app 👋
+## Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
